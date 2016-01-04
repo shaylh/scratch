@@ -1,0 +1,3 @@
+<rt-require dependency="langs" as="langs"/>
+<rt-require dependency="core/components/title" as="rtTitle"/>
+<rtTitle title="this is a title" subtitle="{langs.en.HELLO}"></rtTitle>
