@@ -9,6 +9,7 @@
 
 ### Regular dev ###
 node_modules
+.sass-cache
 npm-debug.log
 .idea
 *.iml
