@@ -1,5 +1,7 @@
-var _ = require('lodash');
+var uglifyMapping = require('./tasks/uglify-mapping');
+var utils = require('./tasks/utils');
 var listPackages = require('./tasks/list-packages');
+
 module.exports = function (grunt) {
     'use strict';
 
@@ -7,28 +9,6 @@ module.exports = function (grunt) {
     var packagesPath = scriptsPath + 'packages/';
 
     grunt.file.mkdir('target');
-
-    function getDefineName(srcPath) {
-        var srcNoJS = srcPath.replace(packagesPath, '').replace('.js', '');
-        var splitSrc = srcNoJS.split('/');
-        var packageName = splitSrc[0];
-        var fileNameArray = splitSrc.slice(2);
-
-        console.log(srcNoJS, fileNameArray);
-        if (fileNameArray.length === 1) {
-            return packageName;
-        }
-
-        return packageName + '/' + fileNameArray.join('/');
-    }
-
-    function getUglifyMapping() {
-        return _.reduce(grunt.file.expandMapping(packagesPath + '*'), function (res, mapping) {
-            var dest = mapping.dest.replace(packagesPath, '');
-            res[scriptsPath + 'packages-bin/' + dest + '.min.js'] = 'target/' + dest + '/**/*.js';
-            return res;
-        }, {});
-    }
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -45,14 +25,14 @@ module.exports = function (grunt) {
                 expand: true,
                 options: {
                     process: function (content, srcPath) {
-                        return content.replace('define(', 'define(\'' + getDefineName(srcPath) + '\' ,');
+                        return content.replace('define(', 'define(\'' + utils.getDefineName(packagesPath, srcPath) + '\' ,');
                     }
                 }
             }
         },
         uglify: {
             build: {
-                files: getUglifyMapping()
+                files: uglifyMapping(grunt, scriptsPath, packagesPath)
             }
         },
         clean: {
