@@ -14,6 +14,7 @@ var config = {
 };
 var debugPackages = params.debug ?  params.debug.split(',') : [];
 packages.forEach(function(package){
+    loadCss('styles/' + package + '.css');
     if(params.debug && (debugPackages.includes('all') || debugPackages.includes(package))){
         config.packages.push({
             name: package,
@@ -31,6 +32,14 @@ function getParams() {
         res[split[0]] = split[1];
         return res;
     }, {});
+}
+
+function loadCss(cssPath){
+    var linkNode = document.createElement('link');
+    linkNode.setAttribute('href', cssPath);
+    linkNode.setAttribute('rel', 'stylesheet');
+    linkNode.setAttribute('type', 'text/css');
+    document.head.appendChild(linkNode);
 }
 
 require.config(config);

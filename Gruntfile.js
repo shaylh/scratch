@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var uglifyMapping = require('./tasks/uglify-mapping');
 var utils = require('./tasks/utils');
 var listPackages = require('./tasks/list-packages');
@@ -7,6 +8,7 @@ module.exports = function (grunt) {
 
     var scriptsPath = 'public/scripts/';
     var packagesPath = scriptsPath + 'packages/';
+    var packages = utils.getPackages(grunt, packagesPath);
 
     grunt.file.mkdir('target');
 
@@ -36,7 +38,8 @@ module.exports = function (grunt) {
             }
         },
         clean: {
-            target: ['target']
+            target: ['target'],
+            styles: ['public/styles']
         },
         eslint: {
             all: {
@@ -56,14 +59,21 @@ module.exports = function (grunt) {
                     spawn: false
                 }
             }
+        },
+        sass: {//requires "gem install sass" for source-maps
+            dist: {
+                files: _.reduce(packages, function (res, packageName) {
+                    res['public/styles/' + packageName + '.css'] = packagesPath + packageName + '/main/' + packageName + '.scss';
+                    return res;
+                }, {})
+            }
         }
-        //watch: {sass: {files: ['sass/**/*.{scss,sass}','sass/_partials/**/*.{scss,sass}'],tasks: ['sass:dist']},livereload: {files: ['*.html', '*.php', 'js/**/*.{js,json}', 'css/*.css','img/**/*.{png,jpg,jpeg,gif,webp,svg}'],options: {livereload: true}}},
-        //sass: {options: {sourceMap: true,outputStyle: 'compressed'},dist: {files: {'css/styles.css': 'sass/styles.scss','css/pages.css': 'sass/pages.scss'}}}
     });
-    //grunt.registerTask('requirejs', ['requirejs']);
-    grunt.registerTask('list-packages', listPackages.bind(null, grunt, scriptsPath, packagesPath));
+
+    grunt.registerTask('list-packages', listPackages.bind(null, grunt, scriptsPath, packages));
     grunt.registerTask('rt', ['react-templates']);
-    grunt.registerTask('build', ['rt', 'copy', 'uglify', 'list-packages', 'clean:target']);
+    grunt.registerTask('css', ['clean:styles', 'sass']);
+    grunt.registerTask('build', ['rt', 'css', 'copy', 'uglify', 'list-packages', 'clean:target']);
     grunt.registerTask('default', ['eslint', 'build']);
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -72,5 +82,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-react-templates');
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    //grunt.loadNpmTasks('grunt-contrib-requirejs');
+    grunt.loadNpmTasks('grunt-contrib-sass');
 };

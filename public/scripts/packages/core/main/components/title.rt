@@ -1,4 +1,4 @@
-<div>
+<div class="title">
     <h1>{this.props.title}</h1>
     <h2 rt-if="this.props.subtitle" key="subtitle">{this.props.subtitle}</h2>
 </div>
