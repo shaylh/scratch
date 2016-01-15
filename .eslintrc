@@ -133,7 +133,8 @@
     "env": {
         "browser": true,
         "node": false,
-        "amd": true
+        "amd": true,
+        "jasmine": true
     },
     "globals": {
         "requirejs": true

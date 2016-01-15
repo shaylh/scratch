@@ -1,4 +1,4 @@
 module.exports = function (grunt, scriptsPath, packages) {
-    var fileContent = 'var packages = ' + JSON.stringify(packages) + ';';
+    var fileContent = 'function getPackages(){return ' + JSON.stringify(packages) + ';}';
     grunt.file.write(scriptsPath + 'packages.js', fileContent);
 };

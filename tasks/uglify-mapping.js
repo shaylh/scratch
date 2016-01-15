@@ -3,7 +3,7 @@ var utils = require('./utils');
 var _ = require('lodash');
 
 function getDependencyTree(grunt, packagesPath) {
-    var innerMappings = grunt.file.expand(packagesPath + '/**/*.js');
+    var innerMappings = grunt.file.expand([packagesPath + '/**/*.js', '!' + packagesPath + '/**/*.spec.js']);
     var tree = _.reduce(innerMappings, function (res, filePath) {
         var fileContent = grunt.file.read(filePath);
         var from = fileContent.indexOf('[') + 1;
@@ -26,4 +26,4 @@ module.exports = function (grunt, scriptsPath, packagesPath) {
         res[minifiedPath].push('target/' + packageName + '/main/' + split.slice(1).join('/') + (split.length === 1 ? packageName : '') + '.js');
         return res;
     }, {});
-}
+};

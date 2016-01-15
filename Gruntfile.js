@@ -2,6 +2,7 @@ var _ = require('lodash');
 var uglifyMapping = require('./tasks/uglify-mapping');
 var utils = require('./tasks/utils');
 var listPackages = require('./tasks/list-packages');
+var fs = require('fs');
 
 module.exports = function (grunt) {
     'use strict';
@@ -63,9 +64,17 @@ module.exports = function (grunt) {
         sass: {//requires "gem install sass" for source-maps
             dist: {
                 files: _.reduce(packages, function (res, packageName) {
-                    res['public/styles/' + packageName + '.css'] = packagesPath + packageName + '/main/' + packageName + '.scss';
+                    var filePath = packagesPath + packageName + '/main/' + packageName + '.scss';
+                    if (fs.existsSync(filePath)) {
+                        res['public/styles/' + packageName + '.css'] = filePath;
+                    }
                     return res;
                 }, {})
+            }
+        },
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js'
             }
         }
     });
@@ -73,6 +82,7 @@ module.exports = function (grunt) {
     grunt.registerTask('list-packages', listPackages.bind(null, grunt, scriptsPath, packages));
     grunt.registerTask('rt', ['react-templates']);
     grunt.registerTask('css', ['clean:styles', 'sass']);
+    grunt.registerTask('test', ['karma']);
     grunt.registerTask('build', ['rt', 'css', 'copy', 'uglify', 'list-packages', 'clean:target']);
     grunt.registerTask('default', ['eslint', 'build']);
 
@@ -83,4 +93,5 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-karma');
 };

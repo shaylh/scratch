@@ -19,4 +19,5 @@ npm-debug.log
 
 *.rt.js
 public/scripts/packages-bin
+public/scripts/packages.js
 public/styles

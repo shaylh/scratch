@@ -1,30 +1,4 @@
-var params = getParams();
-var config = {
-    paths: {
-        lodash: 'libs/lodash/lodash',
-        react: 'libs/react/react'
-    },
-    packages: [],
-    waitSeconds: 15,
-    map: {
-        '*': {
-            'react/addons': 'react'
-        }
-    }
-};
-var debugPackages = params.debug ?  params.debug.split(',') : [];
-packages.forEach(function(package){
-    loadCss('styles/' + package + '.css');
-    if(params.debug && (debugPackages.includes('all') || debugPackages.includes(package))){
-        config.packages.push({
-            name: package,
-            location: 'packages/' + package + '/main',
-            main: package
-        });
-    } else {
-        config.paths[package] = 'packages-bin/' + package + '.min'
-    }
-});
+var config = getConfig(getPackages(), getParams(), packageCallback);
 
 function getParams() {
     return location.search.substr(1).split('&').reduce(function (res, pair) {
@@ -32,6 +6,10 @@ function getParams() {
         res[split[0]] = split[1];
         return res;
     }, {});
+}
+
+function packageCallback(packageName){
+    loadCss('styles/' + packageName + '.css');
 }
 
 function loadCss(cssPath){
