@@ -22,6 +22,6 @@ function loadCss(cssPath){
 
 require.config(config);
 
-define(['react', 'core', 'langs'], function (React, core) {
-    React.render(React.createElement(core.scratch, {}), document.getElementById('app'));
+define(['react', 'react-dom', 'core', 'langs'], function (React, ReactDOM, core) {
+    ReactDOM.render(React.createElement(core.scratch, {}), document.getElementById('app'));
 });

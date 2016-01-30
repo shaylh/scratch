@@ -18,6 +18,7 @@ npm-debug.log
 /bower_components/*
 
 *.rt.js
+public/scripts/libs
 public/scripts/packages-bin
 public/scripts/packages.js
 public/styles

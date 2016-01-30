@@ -1,9 +1,11 @@
 function getConfig(packages, queryParams, packageCallback) {
     var debugPackages = queryParams.debug ? queryParams.debug.split(',') : [];
+    var debugLibs = shouldDebug(debugPackages, 'libs');
     var config = {
         paths: {
-            lodash: 'libs/lodash/lodash',
-            react: 'libs/react/react'
+            lodash: getPath('libs/lodash/dist/lodash' ,debugLibs),
+            react: getPath('libs/react/react' ,debugLibs),
+            'react-dom': getPath('libs/react/react-dom' ,debugLibs)
         },
         packages: [],
         waitSeconds: 15,
@@ -18,7 +20,7 @@ function getConfig(packages, queryParams, packageCallback) {
         if (packageCallback) {
             packageCallback(packageName);
         }
-        if (queryParams.debug && (includes(debugPackages, 'all') || includes(debugPackages, packageName))) {
+        if (shouldDebug(debugPackages, packageName)) {
             config.packages.push({
                 name: packageName,
                 location: 'packages/' + packageName + '/main',
@@ -41,6 +43,14 @@ function getConfig(packages, queryParams, packageCallback) {
         }
 
         return false;
+    }
+
+    function shouldDebug(debugPackages, name){
+        return includes(debugPackages, 'all') || includes(debugPackages, name);
+    }
+
+    function getPath(path, debugLibs){
+        return path + (debugLibs ? '' : '.min');
     }
 
     return config;
