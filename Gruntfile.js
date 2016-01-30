@@ -72,9 +72,17 @@ module.exports = function (grunt) {
                 }, {})
             }
         },
-        karma: {
+        karma: {//use for browser tests
             unit: {
                 configFile: 'karma.conf.js'
+            }
+        },
+        jasmine: {//use for browser-less tests
+            unit: {
+                src: [
+                    'test/units-main.js',
+                    'public/scripts/packages/**/test/**/*.unit.js'
+                ]
             }
         }
     });
@@ -82,10 +90,11 @@ module.exports = function (grunt) {
     grunt.registerTask('list-packages', listPackages.bind(null, grunt, scriptsPath, packages));
     grunt.registerTask('rt', ['react-templates']);
     grunt.registerTask('css', ['clean:styles', 'sass']);
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('test', ['jasmine', 'karma']);
     grunt.registerTask('build', ['rt', 'css', 'copy', 'uglify', 'list-packages', 'clean:target']);
     grunt.registerTask('default', ['eslint', 'build']);
 
+    grunt.loadNpmTasks('grunt-jasmine-npm');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');

@@ -46,4 +46,6 @@ function getConfig(packages, queryParams, packageCallback) {
     return config;
 }
 
-
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = getConfig;
+}
