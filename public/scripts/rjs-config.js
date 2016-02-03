@@ -3,9 +3,12 @@ function getConfig(packages, queryParams, packageCallback) {
     var debugLibs = shouldDebug(debugPackages, 'libs');
     var config = {
         paths: {
+            immutable: getPath('libs/immutable/dist/immutable' ,debugLibs),
             lodash: getPath('libs/lodash/dist/lodash' ,debugLibs),
             react: getPath('libs/react/react' ,debugLibs),
-            'react-dom': getPath('libs/react/react-dom' ,debugLibs)
+            'react-dom': getPath('libs/react/react-dom' ,debugLibs),
+            redux: 'libs/redux/index',
+            'react-redux': 'libs/react-redux/index'
         },
         packages: [],
         waitSeconds: 15,

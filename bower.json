@@ -12,7 +12,10 @@
     "bower_components"
   ],
   "dependencies": {
-    "lodash": "~4.1.0",
-    "react": "~0.14.7"
+    "lodash": "4.1.0",
+    "immutable": "3.7.6",
+    "react": "0.14.7",
+    "redux": "https://cdnjs.cloudflare.com/ajax/libs/redux/3.2.1/redux.min.js",
+    "react-redux": "https://cdnjs.cloudflare.com/ajax/libs/react-redux/4.2.1/react-redux.min.js"
   }
 }

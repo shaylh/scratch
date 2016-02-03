@@ -1,0 +1,36 @@
+<rt-require dependency="./stateContainer" as="stateContainer"/>
+<rt-require dependency="./compContainer" as="compContainer"/>
+<rt-require dependency="comp" as="comp"/>
+<div class="app">
+    <div class="container props-container">
+        <h3>Component properties</h3>
+        <table>
+            <tbody>
+            <tr rt-repeat="prop in this.getCompPropTypes(comp)" key="{prop.name}">
+                <td>{prop.name}:</td>
+                <td>
+                    <span className="{prop.placeholder.replace('.required', '')}"><input rt-props="prop"/></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container state-container">
+        <stateContainer></stateContainer>
+    </div>
+    <div class="container comp-style">
+        <h3>Container style</h3>
+
+        <table>
+            <tbody>
+            <tr rt-repeat="style in ['width','height']" key="{style}">
+                <td>{style}:</td>
+                <td><input type="text" defaultValue="{this.props.compContainerStyle[style]}" onChange="{this.setCompContainerStyle.bind(this, style)}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container comp-container">
+        <compContainer compName="{this.props.compName}"></compContainer>
+    </div>
+</div>

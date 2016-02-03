@@ -1,0 +1,4 @@
+<div>
+    <h3>Component state</h3>
+    <span class="state-text">{this.props.compState}</span>
+</div>

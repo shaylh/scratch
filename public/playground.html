@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Single comp playground</title>
+
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/packages.js"></script>
+    <script src="scripts/rjs-config.js"></script>
+    <script data-main="scripts/playground" src="scripts/require.js"></script>
+    <style>
+        body {
+            overflow: auto !important;
+            background: #d3edff;
+        }
+        .app {
+            display: flex;
+            align-items: stretch;
+            align-content: stretch;
+            flex-wrap: wrap;
+        }
+        .container {
+            border: thin solid #0092cc;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 10px 10px 5px #888;
+        }
+        .comp-container .comp {
+            border: dashed thin black;
+        }
+        .container > table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        .container > table td:first-child {
+            text-align: right;
+            padding-right: 3px;
+        }
+        .props-container .func input {
+            width: 50px;
+        }
+        .props-container .func::before {
+            content: 'console.log(';
+            color: grey;
+        }
+        .props-container .func::after {
+            content: ')';
+            color: grey;
+        }
+        .state-text {
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app"></div>
+</body>
+</html>

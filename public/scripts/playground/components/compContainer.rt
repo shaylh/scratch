@@ -1,0 +1,7 @@
+<rt-require dependency="comp" as="comp"/>
+<div>
+    <h3>{this.props.compName}</h3>
+    <div class="comp" style="{this.props.compContainerStyle.toJS()}">
+        <comp ref="comp" rt-props="this.props.compProps.toJS()"></comp>
+    </div>
+</div>

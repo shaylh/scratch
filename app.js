@@ -1,8 +1,11 @@
 var express = require('express');
-var app = express();
-var PORT = 8080;
 
-app.use(express.static('public'));
-app.listen(PORT);
+serveStaticFolder('public', 8080);
 
-console.log('Started http server at port', PORT);
+function serveStaticFolder(folder, port){
+    var app = express();
+    app.use(express.static(folder));
+    app.listen(port);
+
+    console.log('Serving', folder, 'from port', port);
+}
