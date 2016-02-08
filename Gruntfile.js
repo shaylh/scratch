@@ -18,7 +18,7 @@ module.exports = function (grunt) {
         reactTemplates: {
             modules: 'amd',
             format: 'stylish',
-            src: [packagesPath + '**/*.rt']
+            src: [scriptsPath + '**/*.rt']
         },
         copy: {
             build: {
@@ -35,12 +35,15 @@ module.exports = function (grunt) {
         },
         uglify: {
             build: {
-                files: uglifyMapping(grunt, scriptsPath, packagesPath)
+                get files() {
+                    return uglifyMapping(grunt, scriptsPath, packagesPath);
+                }
             }
         },
         clean: {
             target: ['target'],
-            styles: ['public/styles']
+            styles: ['public/styles'],
+            packages: ['public/scripts/packages-bin', 'public/scripts/packages.js']
         },
         eslint: {
             all: {
@@ -91,7 +94,7 @@ module.exports = function (grunt) {
     grunt.registerTask('rt', ['react-templates']);
     grunt.registerTask('css', ['clean:styles', 'sass']);
     grunt.registerTask('test', ['jasmine', 'karma']);
-    grunt.registerTask('build', ['rt', 'css', 'copy', 'uglify', 'list-packages', 'clean:target']);
+    grunt.registerTask('build', ['clean:packages', 'rt', 'css', 'copy', 'uglify', 'list-packages', 'clean:target']);
     grunt.registerTask('default', ['eslint', 'build']);
 
     grunt.loadNpmTasks('grunt-jasmine-npm');
