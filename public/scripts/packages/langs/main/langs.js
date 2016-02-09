@@ -3,7 +3,8 @@ define([], function () {
 
     return {
         en: {
-            HELLO: 'howdy'
+            HELLO: 'howdy',
+            RENAME_TITLE: 'Rename title using input below:'
         }
     };
 });

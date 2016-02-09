@@ -17,7 +17,7 @@ function getDependencyTree(grunt, packagesPath) {
 
 module.exports = function (grunt, scriptsPath, packagesPath) {
     var tree = getDependencyTree(grunt, packagesPath);
-    var filesInOrder = resolver(tree, {exclude: ['react', 'lodash', 'react/addons']});
+    var filesInOrder = resolver(tree, {exclude: ['react', 'lodash', 'react/addons', 'reactredux', 'redux', 'immutable']});
     return _.reduce(filesInOrder, function (res, file) {
         var split = file.split('/');
         var packageName = _.first(split);

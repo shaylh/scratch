@@ -4,9 +4,15 @@ var queryParams = getParams();
 config.paths.comp = 'packages/' + queryParams.package + '/main/' + queryParams.comp;
 
 require.config(config);
+allowHotReload();
 
-define(['react-dom', './playground/core/provider'], function (ReactDom, provider) {
-    var compName = _.last(queryParams.comp.split('/'));
+function defineApp() {
+    define('mainApp', ['react-dom', './playground/core/provider'], function (ReactDOM, provider) {
+        var compName = _.last(queryParams.comp.split('/'));
 
-    ReactDom.render(provider(compName), document.getElementById('app'));
-});
+        ReactDOM.render(provider(compName), document.getElementById('app'));
+    });
+    require(['mainApp']);
+}
+
+defineApp();

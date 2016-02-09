@@ -1,8 +1,8 @@
-define(['core/components/scratch'], function (scratch) {
+define(['core/store/provider'], function (provider) {
     'use strict';
 
     return {
-        scratch: scratch
+        provider: provider
     };
 
 });

@@ -1,12 +1,12 @@
 function getConfig(packages, queryParams, packageCallback) {
     var debugPackages = queryParams.debug ? queryParams.debug.split(',') : [];
-    var debugLibs = shouldDebug(debugPackages, 'libs');
+    var debugLibs = isLocalDev() || shouldDebug(debugPackages, 'libs');
     var config = {
         paths: {
-            immutable: getPath('libs/immutable/dist/immutable' ,debugLibs),
-            lodash: getPath('libs/lodash/dist/lodash' ,debugLibs),
-            react: getPath('libs/react/react' ,debugLibs),
-            'react-dom': getPath('libs/react/react-dom' ,debugLibs),
+            immutable: getPath('libs/immutable/dist/immutable', debugLibs),
+            lodash: getPath('libs/lodash/dist/lodash', debugLibs),
+            react: getPath('libs/react/react', debugLibs),
+            'react-dom': getPath('libs/react/react-dom', debugLibs),
             redux: 'libs/redux/index',
             'react-redux': 'libs/react-redux/index'
         },
@@ -48,12 +48,16 @@ function getConfig(packages, queryParams, packageCallback) {
         return false;
     }
 
-    function shouldDebug(debugPackages, name){
+    function shouldDebug(debugPackages, name) {
         return includes(debugPackages, 'all') || includes(debugPackages, name);
     }
 
-    function getPath(path, debugLibs){
+    function getPath(path, debugLibs) {
         return path + (debugLibs ? '' : '.min');
+    }
+
+    function isLocalDev() {
+        return location.hostname === 'localhost';
     }
 
     return config;
