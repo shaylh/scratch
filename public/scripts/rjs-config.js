@@ -3,6 +3,7 @@ function getConfig(packages, queryParams, packageCallback) {
     var debugLibs = isLocalDev() || shouldDebug(debugPackages, 'libs');
     var config = {
         paths: {
+            io: '/socket.io/socket.io.js',
             immutable: getPath('libs/immutable/dist/immutable', debugLibs),
             lodash: getPath('libs/lodash/dist/lodash', debugLibs),
             react: getPath('libs/react/react', debugLibs),
@@ -57,7 +58,7 @@ function getConfig(packages, queryParams, packageCallback) {
     }
 
     function isLocalDev() {
-        return location.hostname === 'localhost';
+        return typeof location !== 'undefined' && location.hostname === 'localhost';
     }
 
     return config;

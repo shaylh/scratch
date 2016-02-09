@@ -21,19 +21,21 @@ function loadCss(cssPath) {
 function allowHotReload() {
     var reverseDependencies = {};
 
+    loadSocketIO();
+
     require.onResourceLoad = function (context, map, depMaps) {
-        depMaps.forEach(function(depMap){
+        depMaps.forEach(function (depMap) {
             var name = depMap.name;
             reverseDependencies[name] = reverseDependencies[name] || [];
             reverseDependencies[name].push(map.name);
         });
     };
 
-    function listAllDependents(dep, array){
+    function listAllDependents(dep, array) {
         array = array || [];
         array.push(dep);
-        if(reverseDependencies[dep]){
-            reverseDependencies[dep].forEach(function(childDep){
+        if (reverseDependencies[dep]) {
+            reverseDependencies[dep].forEach(function (childDep) {
                 listAllDependents(childDep, array);
             });
         }
@@ -56,6 +58,15 @@ function allowHotReload() {
         require(list);
     }
 
-    window.hotReload = hotReload;
+    function loadSocketIO() {
+        require(['io'], function (io) {
+            var socket = io('http://localhost:8080');
+            socket.on('hot-reload', function (data) {
+                if (data.module) {
+                    hotReload(data.module);
+                }
+            });
+        });
+    }
 }
 
