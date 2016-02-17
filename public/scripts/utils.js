@@ -43,7 +43,8 @@ function allowHotReload() {
         return array;
     }
 
-    function hotReload(dep) {
+    function hotReloadJS(dep) {
+        console.log('hot-reload js:', dep);
         if (!reverseDependencies[dep]) {
             console.error('No such file:', dep);
             return;
@@ -51,6 +52,16 @@ function allowHotReload() {
         require('react-dom').unmountComponentAtNode(document.getElementById('app'));
         undefList(listAllDependents(dep));
         defineApp();
+    }
+
+    function hotReloadCSS(package){
+        console.log('hot-reload css:', package);
+        var cssPath = 'styles/' + package + '.css';
+        var existingNode = document.querySelector('link[href="' + cssPath + '"]');
+
+        document.head.removeChild(existingNode);
+
+        loadCss(cssPath);
     }
 
     function undefList(list) {
@@ -61,9 +72,14 @@ function allowHotReload() {
     function loadSocketIO() {
         require(['io'], function (io) {
             var socket = io('http://localhost:8080');
-            socket.on('hot-reload', function (data) {
+            socket.on('hot-reload-js', function (data) {
                 if (data.module) {
-                    hotReload(data.module);
+                    hotReloadJS(data.module);
+                }
+            });
+            socket.on('hot-reload-css', function (data) {
+                if (data.package) {
+                    hotReloadCSS(data.package);
                 }
             });
         });
